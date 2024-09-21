@@ -1,16 +1,21 @@
 # shoppinglist
 
-A new Flutter project.
+Bem-vindo ao nosso aplicativo de Lista de Compras!
+Este aplicativo foi desenvolvido para simplificar o 
+gerenciamento das suas compras do dia a dia, oferecendo 
+uma experiência prática e intuitiva para criar e gerenciar 
+suas listas de forma rápida e eficiente. Aqui está um resumo
+das principais funcionalidades:
+Inserir Itens, Lista de Itens, Editar Itens e Tela Sobre.
+Nosso principal objetivo é ajudar você a gerenciar suas compras 
+de forma simples e sem complicações. Com uma interface limpa,
+fácil de usar e repleta de funcionalidades úteis, o aplicativo
+foi pensado para quem quer economizar tempo e evitar esquecimentos
+na hora de fazer compras.
+Esperamos que você aproveite ao máximo o aplicativo e que ele faça
+parte do seu dia a dia para tornar suas compras mais
+organizadas e eficientes!
 
-## Getting Started
+## Telas do aplicativo
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![telas](https://github.com/user-attachments/assets/9ba3e7d5-ee22-42cf-867e-beffe1225027)
