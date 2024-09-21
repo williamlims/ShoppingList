@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '/util/dbhelper.dart';
 import '/model/shoppinglist.dart';
 import '/screens/new.dart';
-import '/screens/list.dart';
+import '/screens/listt.dart';
 import '/screens/about.dart';
 
 void main() {
@@ -44,7 +44,7 @@ class App extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const List()),
+                      MaterialPageRoute(builder: (context) => const ShoppingListApp()),
                     );
                   },
                   child: const Text('ITENS NA LISTA'),

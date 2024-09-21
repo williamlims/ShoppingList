@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '/util/dbhelper.dart';
 import '/model/shoppinglist.dart';
-
+import 'listt.dart';
 
 void main() {
   runApp(const New());
 }
 
-class New extends StatelessWidget {
+class New extends StatefulWidget {
   const New({super.key});
 
-  // This widget is the root of your application.
+  @override
+  _NewItemState createState() => _NewItemState();
+}
+
+class _NewItemState extends State<New> {
+  String title = "";
+  String description = "";
+  String measure = "";
+  int quantity = 0;
+
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'Novo item',
       home: Scaffold(
@@ -27,24 +34,104 @@ class New extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-          body: Container(
-            //crossAxisAlignment: CrossAxisAlignment.start,
-            //mainAxisSize: MainAxisSize.min,
-            margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0, bottom: 10.0),
-            child: const Column(
+        body: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.only(left: 15.0, right: 15.0, top: 25.0, bottom: 10.0),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text('We move under cover and we move as one'),
-                Text('Through the night, we have one shot to live another day'),
-                Text('We cannot let a stray gunshot give us away'),
-                Text('We will fight up close, seize the moment and stay in it'),
-                Text("It's either that or meet the business end of a bayonet"),
-                Text("The code word is 'Rochambeau,' dig me?"),
+                TextField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Item',
+                  ),
+                  onChanged: (text) {
+                    setState(() {
+                      title = text;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Descrição',
+                  ),
+                  onChanged: (text) {
+                    setState(() {
+                      description = text;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Unidade de Medida',
+                  ),
+                  onChanged: (text) {
+                    setState(() {
+                      measure = text;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Quantidade',
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (text) {
+                    setState(() {
+                      quantity = int.tryParse(text) ?? 0;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (title == "") {
+                      showMessage('Item', "Para criar um novo registro, o campo ITEM deve ser preenchido!");
+                    } else if (description == ""){
+                      showMessage('Descrição', "Para criar um novo registro, o campo DESCRIÇÃO deve ser preenchido!");
+                    } else if (measure == ""){
+                      showMessage('Medida', "Para criar um novo registro, o campo MEDIDA deve ser preenchido!");
+                    } else if (quantity == 0){
+                      showMessage('Quantidade', "Para criar um novo registro, o campo QUANTIDADE deve ser um NÚMERO diferente de 0!");
+                    } else {
+                      DbHelper helper = DbHelper();
+                      ShoppingList list = ShoppingList(title, description, measure, quantity);
+                      Future id = helper.insertList(list);
+                      id.then( (value) => debugPrint(value.toString()) );
+                      title = "";
+                      description = "";
+                      measure = "";
+                      quantity = 0;
+
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ShoppingListApp()),
+                      );
+                    }
+                  },
+                  child: const Text('SALVAR'),
+                ),
               ],
-            )
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  showMessage(String titleText, String text) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(titleText),
+        content: Text(text),
+      )
     );
   }
 }
