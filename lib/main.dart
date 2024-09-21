@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import '/util/dbhelper.dart';
-import '/model/shoppinglist.dart';
 import '/screens/new.dart';
-import '/screens/listt.dart';
+import '/screens/shoppinglistapp.dart';
 import '/screens/about.dart';
 
 void main() {

@@ -12,9 +12,9 @@ class ShoppingListApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Lista de Compras',
-      home: const ShoppingListScreen(),
+      home: ShoppingListScreen(),
     );
   }
 }
@@ -38,7 +38,6 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   }
 
   void _loadData() async {
-    // Inicializa o banco e carrega os dados
     var db = await helper.db;
     List result = await helper.getLists();
 
@@ -49,18 +48,15 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   }
 
   void _navigateToEdit(BuildContext context, ShoppingList item) {
-    // Navega para a tela de edição, passando o item selecionado
     Navigator.push(
       context,
       MaterialPageRoute(
-        //builder: (context) => Edit(item: item),
         builder: (context) => const Edit(),
         settings: RouteSettings(
           arguments: item,
         ),
       ),
     ).then((value) {
-      // Quando voltar da tela de edição, recarrega os dados
       _loadData();
     });
   }
@@ -74,7 +70,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
         backgroundColor: Colors.indigo,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: ListView.builder(

@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import '/util/dbhelper.dart';
 import '/model/shoppinglist.dart';
-import 'listt.dart';
+import 'shoppinglistapp.dart';
 
 void main() {
-  //runApp( Edit(item: ShoppingList('Title', 'Description', 'Measure', 2),));
   runApp( const Edit());
 }
 
 class Edit extends StatefulWidget {
-  //final ShoppingList item;
-  //const Edit({super.key, required this.item});
   const Edit({super.key});
 
   @override
@@ -19,20 +16,33 @@ class Edit extends StatefulWidget {
 
 class _NewItemState extends State<Edit> {
 
-  int id = 0;
-  String title = "";
-  String description = "";
-  String measure = "";
-  int quantity = 0;
+  int? id;
+  late TextEditingController title;
+  late TextEditingController description;
+  late TextEditingController measure;
+  late TextEditingController quantityController ;
+  late int quantity;
+
+  @override
+  void initState() {
+    super.initState();
+    title = TextEditingController();
+    description = TextEditingController();
+    measure = TextEditingController();
+    quantityController = TextEditingController();
+    quantity = int.tryParse(quantityController.text) ?? 0;
+  }
 
   @override
   Widget build(BuildContext context) {
     final items = ModalRoute.of(context)!.settings.arguments as ShoppingList;
-    id = items.id!;
-    title = items.title;
-    description = items.description;
-    measure = items.measure;
-    quantity = items.quantity;
+
+    id = items.id;
+    title.text = items.title;
+    description.text = items.description;
+    measure.text = items.measure;
+    quantityController.text = items.quantity.toString();
+    quantity = int.tryParse(items.quantity.toString())!;
 
     return MaterialApp(
       title: 'Editar item',
@@ -53,51 +63,38 @@ class _NewItemState extends State<Edit> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextField(
+                  controller: title,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Item',
                   ),
-                  onChanged: (text) {
-                    setState(() {
-                      title = text;
-                    });
-                  },
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: description,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Descrição',
                   ),
-                  onChanged: (text) {
-                    setState(() {
-                      description = text;
-                    });
-                  },
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: measure,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Unidade de Medida',
                   ),
-                  onChanged: (text) {
-                    setState(() {
-                      measure = text;
-                    });
-                  },
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: quantityController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Quantidade',
                   ),
                   keyboardType: TextInputType.number,
                   onChanged: (text) {
-                    setState(() {
-                      quantity = int.tryParse(text) ?? 0;
-                    });
+                    quantity = int.tryParse(text) ?? 0;
                   },
                 ),
                 const SizedBox(height: 20),
@@ -109,18 +106,13 @@ class _NewItemState extends State<Edit> {
                       showMessage('Descrição', "Para criar um novo registro, o campo DESCRIÇÃO deve ser preenchido!");
                     } else if (measure == ""){
                       showMessage('Medida', "Para criar um novo registro, o campo MEDIDA deve ser preenchido!");
-                    } else if (quantity == 0){
+                    } else if (quantityController.text == 0){
                       showMessage('Quantidade', "Para criar um novo registro, o campo QUANTIDADE deve ser um NÚMERO diferente de 0!");
                     } else {
                       DbHelper helper = DbHelper();
-                      ShoppingList list = ShoppingList(title, description, measure, quantity);
-                      Future id = helper.updateList(list);
-                      id.then( (value) => debugPrint(value.toString()) );
-                      title = "";
-                      description = "";
-                      measure = "";
-                      quantity = 0;
-
+                      ShoppingList list = ShoppingList.withId(id, title.text, description.text, measure.text, quantity);
+                      Future idd = helper.updateList(list);
+                      idd.then( (value) => debugPrint(value.toString()) );
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => const ShoppingListApp()),
@@ -132,14 +124,8 @@ class _NewItemState extends State<Edit> {
                 ElevatedButton(
                   onPressed: () {
                     DbHelper helper = DbHelper();
-                    ShoppingList list = ShoppingList(title, description, measure, quantity);
-                    Future id = helper.insertList(list);
-                    id.then( (value) => debugPrint(value.toString()) );
-                    title = "";
-                    description = "";
-                    measure = "";
-                    quantity = 0;
-
+                    Future idd = helper.deleteList(id!);
+                    idd.then( (value) => debugPrint(value.toString()) );
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => const ShoppingListApp()),

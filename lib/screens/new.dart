@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/util/dbhelper.dart';
 import '/model/shoppinglist.dart';
-import 'listt.dart';
+import 'shoppinglistapp.dart';
 
 void main() {
   runApp(const New());

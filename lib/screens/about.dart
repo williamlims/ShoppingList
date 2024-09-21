@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '/util/dbhelper.dart';
-import '/model/shoppinglist.dart';
 
 void main() {
   runApp(const About());
@@ -10,7 +8,6 @@ void main() {
 class About extends StatelessWidget {
   const About({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
 
